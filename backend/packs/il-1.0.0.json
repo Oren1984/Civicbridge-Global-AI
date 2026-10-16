@@ -1,0 +1,86 @@
+{
+  "code": "IL",
+  "version": "1.0.0",
+  "title": "Israel — synthetic illustrative pack",
+  "status": "synthetic_illustrative",
+  "notes": "Illustrative workflows only. Not legal coverage. Synthetic texts; no official URLs. Working week Sunday-Thursday is modelled with Friday and Saturday as weekend days.",
+  "jurisdictions": [
+    {"code": "IL", "name": "Israel", "level": "country", "parent": null, "locale": "he-IL", "currency": "ILS", "timezone": "Asia/Jerusalem", "weekend_days": [5, 6], "address_format": ["street house_number", "city postcode", "country"], "retention_default_days": 2555,
+     "holidays": [["2026-04-02", "Passover, first day (synthetic calendar entry)"], ["2026-04-08", "Passover, seventh day (synthetic calendar entry)"], ["2026-04-22", "Independence Day (synthetic calendar entry)"], ["2026-05-22", "Shavuot (synthetic calendar entry)"], ["2026-09-12", "Rosh Hashanah (synthetic calendar entry)"], ["2026-09-13", "Rosh Hashanah, second day (synthetic calendar entry)"], ["2026-09-21", "Yom Kippur (synthetic calendar entry)"], ["2026-09-26", "Sukkot (synthetic calendar entry)"], ["2026-10-03", "Simchat Torah (synthetic calendar entry)"]]},
+    {"code": "IL-TA", "name": "Tel Aviv District", "level": "region", "parent": "IL", "locale": "he-IL", "currency": "ILS", "timezone": "Asia/Jerusalem", "weekend_days": [], "address_format": [], "retention_default_days": 2555},
+    {"code": "IL-TA-TLV", "name": "Tel Aviv-Yafo", "level": "municipality", "parent": "IL-TA", "locale": "he-IL", "currency": "ILS", "timezone": "Asia/Jerusalem", "weekend_days": [], "address_format": [], "retention_default_days": 2555}
+  ],
+  "authorities": [
+    {"code": "IL-POP", "name": "Demo Israeli Population Services Office", "jurisdiction": "IL", "kind": "authority", "tenant": "il-population",
+     "services": [
+       {"code": "IL-SVC-DEPART", "name": "Residency status changes", "sla_working_days": 10, "procedures": [
+         {"code": "IL-DEPARTURE-NOTICE", "name": "Notify long-term departure (illustrative)", "description": "Recording a planned long-term stay abroad."}]},
+       {"code": "IL-SVC-RETURN", "name": "Returning residents desk (illustrative)", "sla_working_days": 15, "procedures": [
+         {"code": "IL-RETURNING-REVIEW", "name": "Returning resident benefit review (illustrative)", "description": "Human review of a returning-resident screening."}]}
+     ]},
+    {"code": "IL-TLV-MUNI", "name": "Demo Tel Aviv-Yafo Municipal Services", "jurisdiction": "IL-TA-TLV", "kind": "authority", "tenant": "tlv-municipality",
+     "services": [
+       {"code": "IL-TLV-SVC-106", "name": "Municipal service reports", "sla_working_days": 3, "procedures": [
+         {"code": "IL-TLV-INCIDENT", "name": "Municipal incident (illustrative)", "description": "Streetlights, roads, waste, water and similar reports."}]},
+       {"code": "IL-TLV-SVC-TAX", "name": "Local tax discounts (illustrative)", "sla_working_days": 20, "procedures": [
+         {"code": "IL-TLV-DISCOUNT", "name": "Municipal tax discount review (illustrative)", "description": "Human review of a local tax discount screening."}]}
+     ]}
+  ],
+  "sources": [
+    {"code": "SRC-IL-DEP-1", "title": "Planned long-term stay abroad — synthetic summary", "publisher": "CivicBridge demo content (synthetic)", "jurisdiction": "IL", "language": "en", "effective_from": "2024-01-01", "review_date": "2027-02-28",
+     "passages": [
+       {"anchor": "1", "text": "Synthetic summary: residents planning a long stay abroad may need to update their residency details and contact information with Israeli authorities before departure."},
+       {"anchor": "2", "text": "Synthetic summary: keep certified copies of civil status documents, such as birth and marriage certificates, because foreign authorities often request them with an apostille."},
+       {"anchor": "3", "text": "Synthetic summary: national insurance and health coverage can change during a long stay abroad. Check your status before you leave."}
+     ]},
+    {"code": "SRC-IL-RET-1", "title": "Returning residents — synthetic summary", "publisher": "CivicBridge demo content (synthetic)", "jurisdiction": "IL", "language": "en", "effective_from": "2024-07-01", "review_date": "2026-12-31",
+     "passages": [
+       {"anchor": "1", "text": "Synthetic summary: citizens returning after several years abroad may be eligible for support programmes. This demo uses two years abroad as an illustrative threshold."},
+       {"anchor": "2", "text": "Synthetic summary: eligibility is decided by the responsible authority after reviewing travel records and documents."}
+     ]},
+    {"code": "SRC-IL-TLV-1", "title": "Municipal service reports — synthetic summary", "publisher": "CivicBridge demo content (synthetic)", "jurisdiction": "IL-TA-TLV", "language": "en", "effective_from": "2024-01-01", "review_date": "2027-01-31",
+     "passages": [
+       {"anchor": "1", "text": "Synthetic summary: residents can report streetlight failures, potholes, waste and water leaks to municipal services. Reports are routed to the responsible team."},
+       {"anchor": "2", "text": "Synthetic summary: a municipal tax discount may be available for some households, for example based on income or disability. The municipality decides after a review."}
+     ]}
+  ],
+  "rule_sets": [
+    {"code": "IL-RETURNING-RESIDENT", "name": "Returning resident support screening (Israel, illustrative)", "procedure": "IL-RETURNING-REVIEW", "topic": "benefits", "consequential": true,
+     "versions": [
+       {"version": "1.0", "effective_from": "2024-07-01", "effective_to": null, "language": "en", "review_date": "2026-12-31", "review_status": "synthetic_unreviewed", "confidence": 0.6,
+        "sources": ["SRC-IL-RET-1"],
+        "questions": [
+          {"id": "israeli_citizen", "type": "boolean", "label": {"en": "Are you an Israeli citizen?", "de": "Sind Sie israelische/r Staatsbürger/in?", "he": "האם את/ה אזרח/ית ישראל?"}},
+          {"id": "years_abroad", "type": "number", "label": {"en": "How many years did you live abroad?", "de": "Wie viele Jahre haben Sie im Ausland gelebt?", "he": "כמה שנים התגוררת בחו\"ל?"}}
+        ],
+        "logic": {"when": {"all": [
+            {"q": "israeli_citizen", "op": "eq", "value": true, "explain": "The illustrative programme is for citizens."},
+            {"q": "years_abroad", "op": "gte", "value": 2, "explain": "This demo uses two years abroad as a threshold."}]},
+          "outcomes": {"likely_applicable": "You may be eligible for returning-resident support. The authority decides.", "likely_not_applicable": "This illustrative rule may not fit your answers. This is not a refusal; you can request a review.", "insufficient_information": "Some answers are missing."}},
+        "required_evidence": [{"key": "passport", "category": "identity", "label": "Passport"}, {"key": "travel_record", "category": "other", "label": "Record of stays abroad"}],
+        "appeal_guidance": "Illustrative: you can ask the authority to reconsider and submit additional documents."}
+     ]},
+    {"code": "IL-TLV-TAX-DISCOUNT", "name": "Municipal tax discount screening (Tel Aviv-Yafo, illustrative)", "procedure": "IL-TLV-DISCOUNT", "topic": "local_tax", "consequential": true,
+     "versions": [
+       {"version": "1.0", "effective_from": "2025-01-01", "effective_to": null, "language": "en", "review_date": "2026-09-30", "review_status": "needs_review", "confidence": 0.5,
+        "sources": ["SRC-IL-TLV-1"],
+        "questions": [
+          {"id": "resident_tlv", "type": "boolean", "label": {"en": "Do you live in Tel Aviv-Yafo?", "de": "Wohnen Sie in Tel Aviv-Yafo?", "he": "האם את/ה מתגורר/ת בתל אביב-יפו?"}},
+          {"id": "monthly_income_ils", "type": "number", "label": {"en": "Household monthly income (ILS)", "de": "Monatliches Haushaltseinkommen (ILS)", "he": "הכנסה חודשית של משק הבית (ש\"ח)"}}
+        ],
+        "logic": {"when": {"all": [
+            {"q": "resident_tlv", "op": "eq", "value": true, "explain": "Discounts apply to residents of the municipality."},
+            {"q": "monthly_income_ils", "op": "lte", "value": 9000, "explain": "Illustrative income ceiling of 9,000 ILS."}]},
+          "outcomes": {"likely_applicable": "A discount may be available. The municipality decides.", "likely_not_applicable": "This illustrative rule may not fit. You can still request a review.", "insufficient_information": "Some answers are missing."}},
+        "required_evidence": [{"key": "income_statement", "category": "financial", "label": "Income statement"}],
+        "appeal_guidance": "Illustrative: an appeal can be submitted to the municipality's appeals committee."}
+     ]}
+  ],
+  "integration_adapters": [
+    {"code": "il-population-mock", "name": "Population services exchange (mock)", "jurisdiction": "IL", "tenant": "il-population", "state": "mock", "capabilities": ["submit_request", "status_ack"], "description": "Synthetic acknowledgement gateway. No connection to any real government system."},
+    {"code": "il-tlv-sandbox", "name": "Municipal reports sandbox", "jurisdiction": "IL-TA-TLV", "tenant": "tlv-municipality", "state": "sandbox", "capabilities": ["submit_request"], "description": "Real HTTP round-trip to a local sandbox endpoint, used to exercise timeouts and retries."}
+  ],
+  "emergency_notices": [
+    {"jurisdiction": "IL", "title": "Preparedness reminder (synthetic demo notice)", "body": "Synthetic example: review your household preparedness plan and keep important documents in your CivicBridge wallet.", "severity": "info", "source_label": "Synthetic demo notice — not from an official alerting service", "source_kind": "synthetic_demo", "fallback_instructions": "In an emergency in Israel call 100 (police), 101 (ambulance) or 102 (fire). CivicBridge is not an emergency service."}
+  ]
+}

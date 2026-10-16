@@ -1,0 +1,16 @@
+{
+  "version": "1.0.0",
+  "note": "Fixed demo glossary used by mock translation mode. Only these phrases are translated; everything else is flagged for a human translator.",
+  "entries": [
+    {"de": "Wohnungsgeberbestätigung (synthetisches Demo-Dokument)", "en": "Landlord confirmation (synthetic demo document)", "he": "אישור משכיר (מסמך הדגמה סינתטי)"},
+    {"de": "Hiermit bestätige ich den Einzug der folgenden Person.", "en": "I hereby confirm that the following person has moved in.", "he": "הריני מאשר/ת את כניסתו של האדם הבא לדירה."},
+    {"de": "Dieses Dokument ist synthetisch und nur für Demonstrationszwecke.", "en": "This document is synthetic and for demonstration only.", "he": "מסמך זה סינתטי ומיועד להדגמה בלבד."},
+    {"de": "Geburtsurkunde (synthetisches Demo-Dokument)", "en": "Birth certificate (synthetic demo document)", "he": "תעודת לידה (מסמך הדגמה סינתטי)"},
+    {"de": "Reisepass (synthetisches Demo-Dokument)", "en": "Passport (synthetic demo document)", "he": "דרכון (מסמך הדגמה סינתטי)"},
+    {"de": "Bestätigung der Krankenversicherung (synthetisches Demo-Dokument)", "en": "Health insurance confirmation (synthetic demo document)", "he": "אישור ביטוח בריאות (מסמך הדגמה סינתטי)"},
+    {"de": "Die Straßenlaterne vor dem Gebäude funktioniert nicht.", "en": "The streetlight in front of the building is not working.", "he": "פנס הרחוב מול הבניין אינו פועל."},
+    {"de": "Bitte bestätigen Sie das Datum meines Termins.", "en": "Please confirm the date of my appointment.", "he": "אנא אשרו את מועד הפגישה שלי."},
+    {"de": "Ich benötige weitere Informationen zu meinem Antrag.", "en": "I need more information about my application.", "he": "אני זקוק/ה למידע נוסף על הבקשה שלי."},
+    {"de": "Vielen Dank für Ihre Hilfe.", "en": "Thank you for your help.", "he": "תודה על עזרתכם."}
+  ]
+}

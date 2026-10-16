@@ -1,0 +1,209 @@
+# CivicBridge Global AI — local stack.
+#   docker compose up --build -d
+# Ports are bound to 127.0.0.1 only. See docs/DOCKER.md and docs/VIDEO_SETUP.md.
+name: civicbridge
+
+x-backend-env: &backend-env
+  CB_ENV: local
+  CB_PUBLIC_ORIGIN: ${CB_PUBLIC_ORIGIN:-http://localhost:8084}
+  CB_ALLOWED_ORIGINS: ${CB_ALLOWED_ORIGINS:-http://localhost:8084,http://127.0.0.1:8084}
+  CB_DB_HOST: db
+  CB_DB_NAME: civicbridge
+  CB_DB_USER: civicbridge_app
+  CB_DB_PASSWORD_FILE: /secrets/pg_app_password
+  CB_DB_ADMIN_USER: civicbridge_admin
+  CB_DB_ADMIN_PASSWORD_FILE: /secrets/pg_admin_password_app
+  CB_SECRET_KEY_FILE: /secrets/app_secret_key
+  CB_MFA_KEY_FILE: /secrets/mfa_key
+  CB_S3_ENDPOINT: http://storage:8333
+  CB_S3_CREDENTIALS_FILE: /secrets/s3_credentials
+  CB_CLAMAV_HOST: clamav
+  CB_SMTP_HOST: mailpit
+  CB_LIVEKIT_INTERNAL_URL: http://livekit:7880
+  CB_LIVEKIT_PUBLIC_URL: ${CB_LIVEKIT_PUBLIC_URL:-ws://localhost:8084}
+  CB_LIVEKIT_CREDENTIALS_FILE: /secrets/livekit_credentials
+  CB_INTERNAL_API_URL: http://backend:8000
+  CB_AI_MODE: ${CB_AI_MODE:-mock}
+  CB_OLLAMA_URL: http://ollama:11434
+  CB_OLLAMA_MODEL: ${CB_OLLAMA_MODEL:-llama3.2:3b}
+  CB_DEMO_CREDENTIALS_FILE: /run/civicbridge/demo/demo_credentials.json
+  CB_COOKIE_SECURE: ${CB_COOKIE_SECURE:-false}
+  CB_SEED_DEMO: ${CB_SEED_DEMO:-true}
+  CB_BACKUP_DIR: /backups
+
+services:
+  init-secrets:
+    image: python:3.12-slim
+    command: ["python", "/init/init_secrets.py"]
+    volumes:
+      - secrets:/secrets
+      - ./infra/init_secrets.py:/init/init_secrets.py:ro
+    restart: "no"
+
+  db:
+    image: pgvector/pgvector:0.8.1-pg16
+    environment:
+      POSTGRES_USER: civicbridge_admin
+      POSTGRES_DB: civicbridge
+      POSTGRES_PASSWORD_FILE: /secrets/pg_admin_password
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - secrets:/secrets:ro
+    depends_on:
+      init-secrets:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U civicbridge_admin -d civicbridge"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+    restart: unless-stopped
+
+  storage:
+    image: chrislusf/seaweedfs:4.48
+    command: ["mini", "-dir=/data", "-s3.config=/secrets/s3.json", "-admin.ui=false", "-s3.encryptVolumeData"]
+    volumes:
+      - s3data:/data
+      - secrets:/secrets:ro
+    depends_on:
+      init-secrets:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://localhost:8333/healthz || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 40
+    restart: unless-stopped
+
+  clamav:
+    image: clamav/clamav:1.5.3
+    volumes:
+      - clamdb:/var/lib/clamav
+    # First start downloads signature databases (~300 MB) before clamd answers. Until then uploads stay quarantined.
+    healthcheck:
+      start_period: 300s
+    restart: unless-stopped
+
+  mailpit:
+    image: axllent/mailpit:v1.31.2
+    environment:
+      MP_MAX_MESSAGES: 1000
+    ports:
+      - "127.0.0.1:8095:8025"
+    restart: unless-stopped
+
+  livekit:
+    image: livekit/livekit-server:v1.13.8
+    command: ["--config", "/etc/livekit.yaml", "--node-ip", "${LIVEKIT_NODE_IP:-127.0.0.1}"]
+    volumes:
+      - ./infra/livekit/livekit.yaml:/etc/livekit.yaml:ro
+      - secrets:/secrets:ro
+    ports:
+      - "${LIVEKIT_BIND_IP:-127.0.0.1}:7891:7891"
+      - "${LIVEKIT_BIND_IP:-127.0.0.1}:50100-50160:50100-50160/udp"
+    depends_on:
+      init-secrets:
+        condition: service_completed_successfully
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ./backend
+    command: ["sh", "-c", "python -m app.cli bootstrap && exec uvicorn app.main:app --host 0.0.0.0 --port 8000 --proxy-headers --forwarded-allow-ips=*"]
+    environment: *backend-env
+    volumes:
+      - secrets:/secrets:ro
+      - demo:/run/civicbridge/demo
+      - backups:/backups
+    depends_on:
+      db:
+        condition: service_healthy
+      storage:
+        condition: service_healthy
+      clamav:
+        condition: service_started
+      mailpit:
+        condition: service_started
+      livekit:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/health/live', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 60s
+    restart: unless-stopped
+
+  worker:
+    build:
+      context: ./backend
+    command: ["python", "-m", "app.worker"]
+    environment: *backend-env
+    volumes:
+      - secrets:/secrets:ro
+      - demo:/run/civicbridge/demo
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import sys; sys.exit(0)"]
+      interval: 30s
+    restart: unless-stopped
+
+  # Optional local model. Not started by default; downloads no weights unless you pull a model yourself.
+  ollama:
+    image: ollama/ollama:latest
+    profiles: ["ollama"]
+    volumes:
+      - ollama:/root/.ollama
+    restart: unless-stopped
+
+  # Backend test runner against the real PostgreSQL service (separate scratch database).
+  tests:
+    build:
+      context: ./backend
+      args:
+        INSTALL_DEV: "true"
+    profiles: ["test"]
+    command: ["python", "-m", "pytest", "-q", "-p", "no:cacheprovider", "tests"]
+    environment:
+      <<: *backend-env
+      CB_DB_NAME: civicbridge_test
+      CB_S3_BUCKET: civicbridge-test
+      CB_SEED_DEMO: "false"
+    volumes:
+      - secrets:/secrets:ro
+      - ./backend/app:/app/app:ro
+      - ./backend/tests:/app/tests:ro
+      - ./backend/packs:/app/packs:ro
+      - ./backend/alembic:/app/alembic:ro
+    depends_on:
+      db:
+        condition: service_healthy
+      storage:
+        condition: service_healthy
+
+  # Web entry point: nginx serves the built React app and proxies /api (backend) and /rtc (LiveKit signalling).
+  frontend:
+    build:
+      context: ./frontend
+    environment:
+      # Extra websocket origins allowed by the CSP (must include the host part of CB_LIVEKIT_PUBLIC_URL).
+      CB_CSP_CONNECT_EXTRA: ${CB_CSP_CONNECT_EXTRA:-ws://localhost:8084 ws://127.0.0.1:8084}
+    ports:
+      - "${WEB_BIND_IP:-127.0.0.1}:8084:8080"
+    depends_on:
+      backend:
+        condition: service_healthy
+      livekit:
+        condition: service_started
+    restart: unless-stopped
+
+volumes:
+  secrets:
+  pgdata:
+  s3data:
+  clamdb:
+  demo:
+  backups:
+  ollama:

@@ -1,0 +1,107 @@
+{
+  "code": "DE",
+  "version": "1.0.0",
+  "title": "Germany / EU context — synthetic illustrative pack",
+  "status": "synthetic_illustrative",
+  "notes": "Illustrative workflows only. Not legal coverage. All texts are synthetic paraphrases written for this demo; no official URLs are included. Confirm every requirement with the responsible authority.",
+  "jurisdictions": [
+    {"code": "EU", "name": "European Union (context)", "level": "supranational", "parent": null, "locale": "en-IE", "currency": "EUR", "timezone": "Europe/Brussels", "weekend_days": [6, 7], "address_format": ["street", "postcode city", "country"], "retention_default_days": 3650},
+    {"code": "DE", "name": "Germany", "level": "country", "parent": "EU", "locale": "de-DE", "currency": "EUR", "timezone": "Europe/Berlin", "weekend_days": [6, 7], "address_format": ["street house_number", "postcode city", "country"], "retention_default_days": 3650,
+     "holidays": [["2026-01-01", "New Year's Day (synthetic calendar entry)"], ["2026-04-03", "Good Friday (synthetic calendar entry)"], ["2026-04-06", "Easter Monday (synthetic calendar entry)"], ["2026-05-01", "Labour Day (synthetic calendar entry)"], ["2026-10-03", "Day of German Unity (synthetic calendar entry)"], ["2026-12-25", "Christmas Day (synthetic calendar entry)"], ["2026-12-26", "Second Day of Christmas (synthetic calendar entry)"], ["2027-01-01", "New Year's Day (synthetic calendar entry)"]]},
+    {"code": "DE-BE", "name": "Berlin (state)", "level": "region", "parent": "DE", "locale": "de-DE", "currency": "EUR", "timezone": "Europe/Berlin", "weekend_days": [], "address_format": [], "retention_default_days": 3650,
+     "holidays": [["2026-03-08", "International Women's Day (synthetic calendar entry)"]]},
+    {"code": "DE-BE-BER", "name": "Berlin (municipality)", "level": "municipality", "parent": "DE-BE", "locale": "de-DE", "currency": "EUR", "timezone": "Europe/Berlin", "weekend_days": [], "address_format": [], "retention_default_days": 3650}
+  ],
+  "authorities": [
+    {"code": "DE-BER-REG", "name": "Demo Berlin Residents' Registration Office", "jurisdiction": "DE-BE-BER", "kind": "authority", "tenant": "berlin-registration",
+     "services": [
+       {"code": "DE-BER-SVC-REG", "name": "Residence registration", "sla_working_days": 10, "procedures": [
+         {"code": "DE-BER-ANMELDUNG", "name": "Register a new address (illustrative)", "description": "Registering a residential address after moving into a dwelling."}]},
+       {"code": "DE-BER-SVC-BEN", "name": "Family benefits desk (illustrative)", "sla_working_days": 15, "procedures": [
+         {"code": "DE-BER-FAMILY-BENEFIT", "name": "Family benefit review (illustrative)", "description": "Human review of a family-benefit screening."}]}
+     ]},
+    {"code": "DE-BER-MITTE", "name": "Demo Berlin District Office (Public Space Services)", "jurisdiction": "DE-BE-BER", "kind": "authority", "tenant": "berlin-district",
+     "services": [{"code": "DE-BER-SVC-PUBLIC", "name": "Public space reports", "sla_working_days": 5, "procedures": [
+       {"code": "DE-BER-INCIDENT", "name": "Public space incident (illustrative)", "description": "Streetlights, roads, waste and similar reports."}]}]},
+    {"code": "DE-PENSION-LIAISON", "name": "Demo German Pension Insurance Liaison Office", "jurisdiction": "DE", "kind": "institution", "tenant": "de-pension-liaison",
+     "services": [{"code": "DE-SVC-SOCIAL-COORD", "name": "Cross-border social security coordination", "sla_working_days": 20, "procedures": [
+       {"code": "DE-SOCIAL-COORD", "name": "Coordinate insurance periods with another country (illustrative)", "description": "Interagency exchange of insurance-period records with the citizen's consent."}]}]}
+  ],
+  "sources": [
+    {"code": "SRC-DE-REG-1", "title": "Address registration after moving — synthetic summary", "publisher": "CivicBridge demo content (synthetic)", "jurisdiction": "DE-BE-BER", "language": "en", "effective_from": "2024-01-01", "review_date": "2027-03-31",
+     "passages": [
+       {"anchor": "§1", "text": "Synthetic summary: a person who moves into a dwelling in Germany is generally expected to register the new address with the local registration office within a short period after moving in. This demo uses 14 days as an illustrative period."},
+       {"anchor": "§2", "text": "Synthetic summary: registration usually requires a valid identity document such as a passport and a confirmation from the landlord (Wohnungsgeberbestätigung) that the person moved in."},
+       {"anchor": "§3", "text": "Synthetic summary: after registration a confirmation of registration is issued. Other services, such as the tax identification number, typically follow registration."}
+     ]},
+    {"code": "SRC-DE-FAM-1", "title": "Family benefit eligibility — synthetic summary (older revision)", "publisher": "CivicBridge demo content (synthetic)", "jurisdiction": "DE", "language": "en", "effective_from": "2023-01-01", "review_date": "2026-03-01",
+     "passages": [
+       {"anchor": "A.1", "text": "Synthetic summary: a family benefit may be available to parents who live in Germany and whose child lives in their household. The child's age and education status can affect eligibility."},
+       {"anchor": "A.2", "text": "Synthetic summary: applicants are typically asked for proof of residence, the child's birth certificate and a tax identification number."},
+       {"anchor": "A.3", "text": "Synthetic summary: a person who disagrees with a benefit decision can usually file an objection within one month of receiving the decision."}
+     ]},
+    {"code": "SRC-DE-HEALTH-1", "title": "Health insurance on arrival — synthetic summary", "publisher": "CivicBridge demo content (synthetic)", "jurisdiction": "DE", "language": "en", "effective_from": "2024-01-01", "review_date": "2027-06-30",
+     "passages": [
+       {"anchor": "1", "text": "Synthetic summary: residents in Germany are generally required to hold health insurance. Employees are usually enrolled through their employer; others choose a statutory or private insurer."},
+       {"anchor": "2", "text": "Synthetic summary: proof of health insurance is often requested for residence permits, employment and study enrolment."}
+     ]},
+    {"code": "SRC-DE-RES-1", "title": "Residence permits for non-EU nationals — synthetic overview", "publisher": "CivicBridge demo content (synthetic)", "jurisdiction": "DE", "language": "en", "effective_from": "2024-03-01", "review_date": "2027-01-31",
+     "passages": [
+       {"anchor": "1", "text": "Synthetic overview: nationals of countries outside the EU usually need a residence title for stays longer than 90 days. The type of title depends on the purpose, such as employment, study or family reunification."},
+       {"anchor": "2", "text": "Synthetic overview: applicants are commonly asked for a passport, biometric photo, proof of health insurance and documents about the purpose of stay. A human case officer decides."}
+     ]}
+  ],
+  "rule_sets": [
+    {"code": "DE-BER-REG-OBLIGATION", "name": "Address registration obligation after moving (Berlin, illustrative)", "procedure": "DE-BER-ANMELDUNG", "topic": "registration", "consequential": false,
+     "versions": [
+       {"version": "1.0", "effective_from": "2024-01-01", "effective_to": null, "language": "en", "review_date": "2027-03-31", "review_status": "synthetic_unreviewed", "confidence": 0.75,
+        "sources": ["SRC-DE-REG-1"],
+        "questions": [
+          {"id": "moving_into_dwelling", "type": "boolean", "label": {"en": "Are you moving into a home in Berlin?", "de": "Ziehen Sie in eine Wohnung in Berlin?", "he": "האם את/ה עובר/ת לדירה בברלין?"}},
+          {"id": "stay_months", "type": "number", "label": {"en": "How many months do you plan to stay?", "de": "Wie viele Monate möchten Sie bleiben?", "he": "כמה חודשים בכוונתך להישאר?"}},
+          {"id": "already_registered", "type": "boolean", "label": {"en": "Are you already registered at this address?", "de": "Sind Sie bereits unter dieser Adresse gemeldet?", "he": "האם כבר נרשמת בכתובת זו?"}}
+        ],
+        "logic": {"when": {"all": [
+            {"q": "moving_into_dwelling", "op": "eq", "value": true, "explain": "Registration relates to moving into a dwelling."},
+            {"q": "stay_months", "op": "gte", "value": 3, "explain": "This illustrative rule uses a stay of 3 months or more."},
+            {"q": "already_registered", "op": "eq", "value": false, "explain": "You are not registered at the address yet."}]},
+          "outcomes": {"likely_applicable": "Registration of your address likely applies. The illustrative period used here is 14 days after moving in.", "likely_not_applicable": "Based on your answers, this illustrative registration rule may not apply. Check with the office if unsure.", "insufficient_information": "More information is needed."}},
+        "required_evidence": [{"key": "passport", "category": "identity", "label": "Valid passport"}, {"key": "landlord_confirmation", "category": "housing", "label": "Landlord confirmation"}],
+        "appeal_guidance": "Registration is not a discretionary decision. If the office refuses registration, ask for the reasons in writing."}
+     ]},
+    {"code": "DE-FAMILY-BENEFIT", "name": "Family benefit screening (Germany, illustrative)", "procedure": "DE-BER-FAMILY-BENEFIT", "topic": "benefits", "consequential": true,
+     "versions": [
+       {"version": "1.0", "effective_from": "2023-01-01", "effective_to": "2025-12-31", "language": "en", "review_date": "2025-06-30", "review_status": "synthetic_unreviewed", "confidence": 0.6,
+        "sources": ["SRC-DE-FAM-1"],
+        "questions": [
+          {"id": "resident_in_de", "type": "boolean", "label": {"en": "Do you live in Germany?", "de": "Wohnen Sie in Deutschland?", "he": "האם את/ה מתגורר/ת בגרמניה?"}},
+          {"id": "child_in_household", "type": "boolean", "label": {"en": "Does the child live in your household?", "de": "Lebt das Kind in Ihrem Haushalt?", "he": "האם הילד/ה מתגורר/ת בביתך?"}}
+        ],
+        "logic": {"when": {"all": [{"q": "resident_in_de", "op": "eq", "value": true}, {"q": "child_in_household", "op": "eq", "value": true}]}, "outcomes": {}},
+        "required_evidence": [], "appeal_guidance": "Superseded version."},
+       {"version": "2.0", "effective_from": "2026-01-01", "effective_to": null, "language": "en", "review_date": "2026-03-01", "review_status": "needs_review", "confidence": 0.55,
+        "sources": ["SRC-DE-FAM-1"],
+        "questions": [
+          {"id": "resident_in_de", "type": "boolean", "label": {"en": "Do you live in Germany?", "de": "Wohnen Sie in Deutschland?", "he": "האם את/ה מתגורר/ת בגרמניה?"}},
+          {"id": "child_in_household", "type": "boolean", "label": {"en": "Does the child live in your household?", "de": "Lebt das Kind in Ihrem Haushalt?", "he": "האם הילד/ה מתגורר/ת בביתך?"}},
+          {"id": "child_age", "type": "number", "label": {"en": "How old is the child?", "de": "Wie alt ist das Kind?", "he": "בן/בת כמה הילד/ה?"}},
+          {"id": "has_tax_id", "type": "boolean", "label": {"en": "Do you have a German tax identification number?", "de": "Haben Sie eine Steuer-Identifikationsnummer?", "he": "האם יש לך מספר זיהוי מס גרמני?"}}
+        ],
+        "logic": {"when": {"all": [
+            {"q": "resident_in_de", "op": "eq", "value": true, "explain": "The illustrative rule requires residence in Germany."},
+            {"q": "child_in_household", "op": "eq", "value": true, "explain": "The child must live in your household."},
+            {"q": "child_age", "op": "lt", "value": 18, "explain": "This illustrative version uses an age limit of under 18."},
+            {"q": "has_tax_id", "op": "eq", "value": true, "explain": "A tax identification number is usually requested."}]},
+          "outcomes": {"likely_applicable": "Based on this illustrative rule, a family benefit may be available. Only the authority can decide.", "likely_not_applicable": "This illustrative rule may not fit your answers. This is not a refusal: you can still ask the authority for a decision.", "insufficient_information": "Some answers are missing."}},
+        "required_evidence": [{"key": "birth_certificate", "category": "civil_status", "label": "Child's birth certificate"}, {"key": "registration_confirmation", "category": "housing", "label": "Confirmation of registration"}],
+        "appeal_guidance": "Illustrative: an objection can usually be filed within one month of receiving a decision. CivicBridge links the appeal to your case."}
+     ]}
+  ],
+  "integration_adapters": [
+    {"code": "de-ber-registration-mock", "name": "Berlin registration gateway (mock)", "jurisdiction": "DE-BE-BER", "tenant": "berlin-registration", "state": "mock", "capabilities": ["submit_request", "status_ack"], "description": "Synthetic gateway that acknowledges request hand-offs. No connection to any real government system."},
+    {"code": "de-pension-liaison-mock", "name": "Pension liaison exchange (mock)", "jurisdiction": "DE", "tenant": "de-pension-liaison", "state": "mock", "capabilities": ["evidence_exchange"], "description": "Synthetic interagency exchange used for consented handoffs."}
+  ],
+  "emergency_notices": [
+    {"jurisdiction": "DE-BE-BER", "title": "Heat advisory (synthetic demo notice)", "body": "Synthetic example: high temperatures are expected. Check on neighbours and drink water.", "severity": "advisory", "source_label": "Synthetic demo notice — not from an official alerting service", "source_kind": "synthetic_demo", "fallback_instructions": "In an emergency in the EU call 112. CivicBridge is not an emergency service."}
+  ]
+}

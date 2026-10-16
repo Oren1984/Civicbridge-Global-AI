@@ -1,0 +1,23 @@
+# Self-hosted LiveKit SFU for CivicBridge (local default).
+# The API secret lives in the private secrets volume (key_file); the key *name* "cbkey" is not secret.
+# For remote participants see docs/VIDEO_SETUP.md (public hostname, TLS, open UDP range, TURN).
+port: 7880
+bind_addresses:
+  - 0.0.0.0
+key_file: /secrets/livekit_keys.yaml
+rtc:
+  tcp_port: 7891
+  port_range_start: 50100
+  port_range_end: 50160
+  use_external_ip: false   # node IP is passed with --node-ip (LIVEKIT_NODE_IP); no public STUN lookup by default
+room:
+  auto_create: false       # rooms exist only after the CivicBridge backend opens them
+  empty_timeout: 900
+  max_participants: 12
+webhook:
+  api_key: cbkey
+  urls:
+    - http://backend:8000/api/meetings/livekit/webhook
+logging:
+  level: info
+  json: true

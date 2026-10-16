@@ -1,0 +1,62 @@
+{
+  "code": "US",
+  "version": "1.0.0",
+  "title": "United States — synthetic illustrative pack",
+  "status": "synthetic_illustrative",
+  "notes": "Illustrative workflows only. Not legal coverage. Synthetic texts; no official URLs. Federal, state and city levels are modelled separately.",
+  "jurisdictions": [
+    {"code": "US", "name": "United States", "level": "country", "parent": null, "locale": "en-US", "currency": "USD", "timezone": "America/New_York", "weekend_days": [6, 7], "address_format": ["street", "city, state ZIP", "country"], "retention_default_days": 2555,
+     "holidays": [["2026-01-01", "New Year's Day (synthetic calendar entry)"], ["2026-05-25", "Memorial Day (synthetic calendar entry)"], ["2026-07-03", "Independence Day observed (synthetic calendar entry)"], ["2026-09-07", "Labor Day (synthetic calendar entry)"], ["2026-11-26", "Thanksgiving Day (synthetic calendar entry)"], ["2026-12-25", "Christmas Day (synthetic calendar entry)"]]},
+    {"code": "US-CA", "name": "California", "level": "region", "parent": "US", "locale": "en-US", "currency": "USD", "timezone": "America/Los_Angeles", "weekend_days": [], "address_format": [], "retention_default_days": 2555,
+     "holidays": [["2026-03-31", "César Chávez Day (synthetic calendar entry)"]]},
+    {"code": "US-CA-SF", "name": "San Francisco", "level": "municipality", "parent": "US-CA", "locale": "en-US", "currency": "USD", "timezone": "America/Los_Angeles", "weekend_days": [], "address_format": [], "retention_default_days": 2555}
+  ],
+  "authorities": [
+    {"code": "US-SF-SERVICES", "name": "Demo San Francisco City Services", "jurisdiction": "US-CA-SF", "kind": "authority", "tenant": "sf-city-services",
+     "services": [
+       {"code": "US-SF-SVC-REPORTS", "name": "Neighbourhood service reports", "sla_working_days": 4, "procedures": [
+         {"code": "US-SF-INCIDENT", "name": "Street and sidewalk report (illustrative)", "description": "Potholes, streetlights, graffiti and similar."}]},
+       {"code": "US-SF-SVC-BIZ", "name": "Small business permits (illustrative)", "sla_working_days": 15, "procedures": [
+         {"code": "US-SF-BUSINESS-REG", "name": "Register a small business (illustrative)", "description": "Local registration of a new business."}]}
+     ]},
+    {"code": "US-CA-ASSIST", "name": "Demo California Assistance Programs Office", "jurisdiction": "US-CA", "kind": "authority", "tenant": "ca-assistance",
+     "services": [{"code": "US-CA-SVC-FOOD", "name": "Food assistance (illustrative)", "sla_working_days": 20, "procedures": [
+       {"code": "US-CA-FOOD-REVIEW", "name": "Food assistance review (illustrative)", "description": "Human review of a food-assistance pre-screening."}]}]}
+  ],
+  "sources": [
+    {"code": "SRC-US-FOOD-1", "title": "Food assistance pre-screening — synthetic summary", "publisher": "CivicBridge demo content (synthetic)", "jurisdiction": "US-CA", "language": "en", "effective_from": "2025-10-01", "review_date": "2026-09-30",
+     "passages": [
+       {"anchor": "1", "text": "Synthetic summary: food assistance eligibility usually depends on household size, income and residency. This demo uses a single illustrative monthly income limit."},
+       {"anchor": "2", "text": "Synthetic summary: an eligibility worker reviews applications and may request pay stubs, proof of address and identity documents. Applicants can request a fair hearing if they disagree with a decision."}
+     ]},
+    {"code": "SRC-US-BIZ-1", "title": "Starting a small business — synthetic overview", "publisher": "CivicBridge demo content (synthetic)", "jurisdiction": "US-CA-SF", "language": "en", "effective_from": "2024-01-01", "review_date": "2027-04-30",
+     "passages": [
+       {"anchor": "1", "text": "Synthetic overview: new businesses typically choose a legal structure, register with the state, obtain a federal employer identification number if they hire staff, and register locally."},
+       {"anchor": "2", "text": "Synthetic overview: home-based businesses may need additional local permits depending on the activity."}
+     ]}
+  ],
+  "rule_sets": [
+    {"code": "US-CA-FOOD-ASSIST", "name": "Food assistance pre-screening (California, illustrative)", "procedure": "US-CA-FOOD-REVIEW", "topic": "benefits", "consequential": true,
+     "versions": [
+       {"version": "1.0", "effective_from": "2025-10-01", "effective_to": null, "language": "en", "review_date": "2026-09-30", "review_status": "synthetic_unreviewed", "confidence": 0.5,
+        "sources": ["SRC-US-FOOD-1"],
+        "questions": [
+          {"id": "resident_ca", "type": "boolean", "label": {"en": "Do you live in California?", "de": "Wohnen Sie in Kalifornien?", "he": "האם את/ה מתגורר/ת בקליפורניה?"}},
+          {"id": "household_size", "type": "number", "label": {"en": "How many people are in your household?", "de": "Wie viele Personen leben in Ihrem Haushalt?", "he": "כמה אנשים במשק הבית?"}},
+          {"id": "monthly_income_usd", "type": "number", "label": {"en": "Household monthly income (USD)", "de": "Monatliches Haushaltseinkommen (USD)", "he": "הכנסה חודשית של משק הבית (דולר)"}}
+        ],
+        "logic": {"when": {"all": [
+            {"q": "resident_ca", "op": "eq", "value": true, "explain": "The illustrative programme is for California residents."},
+            {"q": "household_size", "op": "gte", "value": 1, "explain": "Household size is required."},
+            {"q": "monthly_income_usd", "op": "lte", "value": 2500, "explain": "Illustrative single income limit of 2,500 USD."}]},
+          "outcomes": {"likely_applicable": "You may qualify. An eligibility worker decides.", "likely_not_applicable": "This illustrative rule may not fit your answers. You can still apply and ask for a decision.", "insufficient_information": "Some answers are missing."}},
+        "required_evidence": [{"key": "income_statement", "category": "financial", "label": "Recent pay stubs"}, {"key": "proof_of_address", "category": "housing", "label": "Proof of address"}],
+        "appeal_guidance": "Illustrative: you can request a hearing if you disagree with a decision."}
+     ]}
+  ],
+  "integration_adapters": [
+    {"code": "us-sf-services-mock", "name": "City services gateway (mock)", "jurisdiction": "US-CA-SF", "tenant": "sf-city-services", "state": "mock", "capabilities": ["submit_request", "status_ack"], "description": "Synthetic acknowledgement gateway."},
+    {"code": "reference-packs-public", "name": "Reference source snapshot", "jurisdiction": null, "tenant": null, "state": "public_data", "capabilities": ["read_reference_sources"], "description": "Reads the bundled, synthetic reference snapshot through the adapter contract. Not a live public data feed."}
+  ],
+  "emergency_notices": []
+}

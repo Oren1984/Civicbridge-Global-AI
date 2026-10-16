@@ -1,0 +1,116 @@
+{
+  "version": "1.0.0",
+  "templates": [
+    {
+      "code": "relocation-il-de",
+      "life_event_type": "relocation",
+      "name": "Relocate from Israel to Berlin, Germany",
+      "origin": "IL",
+      "destination": "DE-BE-BER",
+      "pack_versions": {"IL": "1.0.0", "DE": "1.0.0"},
+      "summary": "A cross-border journey that composes the Israeli and German packs independently. Synthetic, illustrative steps; confirm details with each authority.",
+      "jurisdictions": ["IL", "DE-BE-BER"],
+      "questions": [
+        {"id": "needs_language_course", "type": "boolean", "label": {"en": "Would you like to include a German language course?", "de": "Möchten Sie einen Deutschkurs einplanen?", "he": "האם לכלול קורס גרמנית?"}},
+        {"id": "has_employer", "type": "boolean", "label": {"en": "Do you already have a job offer in Germany?", "de": "Haben Sie bereits ein Jobangebot in Deutschland?", "he": "האם יש לך כבר הצעת עבודה בגרמניה?"}}
+      ],
+      "tasks": [
+        {"key": "il-gather-docs", "title": "Gather identity and civil status documents", "description": "Upload your passport and birth certificate to your wallet.", "jurisdiction": "IL", "phase": "evidence", "offset_days": -60,
+         "required_evidence": [{"key": "passport", "category": "identity", "label": "Valid passport"}, {"key": "birth_certificate", "category": "civil_status", "label": "Birth certificate"}]},
+        {"key": "de-residence-check", "title": "Check residence permit requirements", "description": "Use the Rights Navigator to screen residence requirements. A human case officer decides on any permit.", "jurisdiction": "DE", "phase": "review", "offset_days": -50, "depends_on": ["il-gather-docs"], "requires_human_review": true},
+        {"key": "il-certified-copies", "title": "Obtain certified copies with apostille (illustrative)", "description": "Foreign authorities often request certified civil status documents.", "jurisdiction": "IL", "phase": "evidence", "offset_days": -40, "depends_on": ["il-gather-docs"],
+         "required_evidence": [{"key": "birth_certificate_apostille", "category": "civil_status", "label": "Certified birth certificate"}]},
+        {"key": "il-departure-notice", "title": "Notify Israeli population services of long-term departure", "description": "Prepared as a request to the demo Israeli authority (simulated exchange).", "jurisdiction": "IL", "phase": "coordination", "offset_days": -14, "depends_on": ["il-gather-docs"], "procedure_code": "IL-DEPARTURE-NOTICE"},
+        {"key": "de-housing", "title": "Secure housing and the landlord confirmation", "description": "You need the landlord's move-in confirmation to register your address.", "jurisdiction": "DE-BE-BER", "phase": "evidence", "offset_days": -7,
+         "required_evidence": [{"key": "landlord_confirmation", "category": "housing", "label": "Landlord confirmation (Wohnungsgeberbestätigung)"}]},
+        {"key": "de-registration", "title": "Register your Berlin address", "description": "Illustrative period: within 14 days after moving in. Sent to the demo Berlin registration office (simulated exchange).", "jurisdiction": "DE-BE-BER", "phase": "decision", "offset_days": 14, "depends_on": ["de-housing", "il-gather-docs"], "procedure_code": "DE-BER-ANMELDUNG",
+         "required_evidence": [{"key": "passport", "category": "identity", "label": "Valid passport"}, {"key": "landlord_confirmation", "category": "housing", "label": "Landlord confirmation"}]},
+        {"key": "de-health-insurance", "title": "Enrol in health insurance", "description": "Proof of health insurance is commonly requested.", "jurisdiction": "DE", "phase": "evidence", "offset_days": 14,
+         "required_evidence": [{"key": "health_insurance", "category": "health", "label": "Health insurance confirmation"}]},
+        {"key": "de-tax-id", "title": "Receive your tax identification number", "description": "Usually follows address registration.", "jurisdiction": "DE", "phase": "coordination", "working_days_after": 20, "depends_on": ["de-registration"]},
+        {"key": "de-social-coordination", "title": "Coordinate social security records between countries", "description": "An interagency handoff to the demo pension liaison office, only with your explicit consent.", "jurisdiction": "DE", "phase": "coordination", "working_days_after": 30, "depends_on": ["de-registration"], "requires_human_review": true, "procedure_code": "DE-SOCIAL-COORD"},
+        {"key": "de-employment-contract", "title": "Upload your employment contract", "description": "Needed if your stay is based on employment.", "jurisdiction": "DE", "phase": "evidence", "offset_days": -30, "only_if": {"q": "has_employer", "value": true},
+         "required_evidence": [{"key": "employment_contract", "category": "employment", "label": "Employment contract"}]},
+        {"key": "de-language-course", "title": "Book a German language course", "description": "Optional step you selected.", "jurisdiction": "DE-BE-BER", "phase": "closure", "offset_days": 60, "only_if": {"q": "needs_language_course", "value": true}}
+      ]
+    },
+    {
+      "code": "employment-de",
+      "life_event_type": "employment",
+      "name": "Start a new job in Germany",
+      "origin": null, "destination": "DE",
+      "pack_versions": {"DE": "1.0.0"},
+      "summary": "Illustrative checklist for starting employment in Germany.",
+      "jurisdictions": ["DE"],
+      "questions": [],
+      "tasks": [
+        {"key": "emp-contract", "title": "Sign and upload your employment contract", "jurisdiction": "DE", "phase": "evidence", "offset_days": -14, "required_evidence": [{"key": "employment_contract", "category": "employment", "label": "Employment contract"}]},
+        {"key": "emp-tax-id", "title": "Give your tax ID to the employer", "jurisdiction": "DE", "phase": "coordination", "offset_days": 0, "depends_on": ["emp-contract"]},
+        {"key": "emp-health", "title": "Confirm health insurance enrolment", "jurisdiction": "DE", "phase": "evidence", "offset_days": 7, "required_evidence": [{"key": "health_insurance", "category": "health", "label": "Health insurance confirmation"}]},
+        {"key": "emp-bank", "title": "Provide bank details for salary", "jurisdiction": "DE", "phase": "closure", "offset_days": 7, "depends_on": ["emp-contract"]}
+      ]
+    },
+    {
+      "code": "study-us",
+      "life_event_type": "study",
+      "name": "Study in California, United States",
+      "origin": null, "destination": "US-CA",
+      "pack_versions": {"US": "1.0.0"},
+      "summary": "Illustrative checklist for international study in California.",
+      "jurisdictions": ["US", "US-CA"],
+      "questions": [],
+      "tasks": [
+        {"key": "study-admission", "title": "Upload your admission letter", "jurisdiction": "US-CA", "phase": "evidence", "offset_days": -120, "required_evidence": [{"key": "admission_letter", "category": "education", "label": "Admission letter"}]},
+        {"key": "study-funds", "title": "Prepare proof of funds", "jurisdiction": "US", "phase": "evidence", "offset_days": -90, "required_evidence": [{"key": "proof_of_funds", "category": "financial", "label": "Bank statement"}]},
+        {"key": "study-visa", "title": "Check student visa requirements", "description": "Decided by the responsible authority; this step only tracks your preparation.", "jurisdiction": "US", "phase": "review", "offset_days": -75, "depends_on": ["study-admission", "study-funds"], "requires_human_review": true},
+        {"key": "study-housing", "title": "Arrange student housing", "jurisdiction": "US-CA", "phase": "coordination", "offset_days": -30}
+      ]
+    },
+    {
+      "code": "family-il-birth",
+      "life_event_type": "family",
+      "name": "Register a birth in Israel",
+      "origin": null, "destination": "IL",
+      "pack_versions": {"IL": "1.0.0"},
+      "summary": "Illustrative family event checklist.",
+      "jurisdictions": ["IL"],
+      "questions": [],
+      "tasks": [
+        {"key": "fam-birth-notice", "title": "Collect the hospital birth notice", "jurisdiction": "IL", "phase": "evidence", "offset_days": 3, "required_evidence": [{"key": "birth_notice", "category": "civil_status", "label": "Birth notice"}]},
+        {"key": "fam-registration", "title": "Register the birth with population services", "jurisdiction": "IL", "phase": "decision", "working_days_after": 10, "depends_on": ["fam-birth-notice"]},
+        {"key": "fam-benefits", "title": "Check child-related benefits", "jurisdiction": "IL", "phase": "review", "working_days_after": 20, "depends_on": ["fam-registration"], "requires_human_review": true}
+      ]
+    },
+    {
+      "code": "retirement-de-il",
+      "life_event_type": "retirement",
+      "name": "Retire in Israel after working in Germany",
+      "origin": "DE", "destination": "IL",
+      "pack_versions": {"DE": "1.0.0", "IL": "1.0.0"},
+      "summary": "Illustrative cross-border retirement checklist.",
+      "jurisdictions": ["DE", "IL"],
+      "questions": [],
+      "tasks": [
+        {"key": "ret-insurance-record", "title": "Request your German insurance record", "jurisdiction": "DE", "phase": "evidence", "offset_days": -180, "required_evidence": [{"key": "insurance_record", "category": "financial", "label": "Insurance record"}]},
+        {"key": "ret-coordination", "title": "Coordinate pension periods between countries", "jurisdiction": "DE", "phase": "coordination", "offset_days": -120, "depends_on": ["ret-insurance-record"], "requires_human_review": true, "procedure_code": "DE-SOCIAL-COORD"},
+        {"key": "ret-il-return", "title": "Check returning resident support", "jurisdiction": "IL", "phase": "review", "offset_days": 30, "requires_human_review": true}
+      ]
+    },
+    {
+      "code": "business-us-sf",
+      "life_event_type": "business",
+      "name": "Start a small business in San Francisco",
+      "origin": null, "destination": "US-CA-SF",
+      "pack_versions": {"US": "1.0.0"},
+      "summary": "Illustrative business formation checklist across federal, state and city levels.",
+      "jurisdictions": ["US", "US-CA", "US-CA-SF"],
+      "questions": [{"id": "will_hire", "type": "boolean", "label": {"en": "Will you hire employees?", "de": "Werden Sie Mitarbeitende einstellen?", "he": "האם תעסיק/י עובדים?"}}],
+      "tasks": [
+        {"key": "biz-structure", "title": "Choose a legal structure", "jurisdiction": "US-CA", "phase": "intake", "offset_days": -45},
+        {"key": "biz-state", "title": "Register the business with the state", "jurisdiction": "US-CA", "phase": "coordination", "offset_days": -30, "depends_on": ["biz-structure"], "required_evidence": [{"key": "formation_document", "category": "other", "label": "Formation document"}]},
+        {"key": "biz-ein", "title": "Obtain an employer identification number", "jurisdiction": "US", "phase": "coordination", "offset_days": -20, "depends_on": ["biz-state"], "only_if": {"q": "will_hire", "value": true}},
+        {"key": "biz-city", "title": "Register with the city", "description": "Prepared as a request to the demo city services (simulated exchange).", "jurisdiction": "US-CA-SF", "phase": "decision", "offset_days": -10, "depends_on": ["biz-state"], "procedure_code": "US-SF-BUSINESS-REG"}
+      ]
+    }
+  ]
+}

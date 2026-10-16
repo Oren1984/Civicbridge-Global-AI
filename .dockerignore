@@ -1,0 +1,4 @@
+# Local-only files that must never enter an image build context
+.admin-user
+.env
+docs/HANDOFF.md

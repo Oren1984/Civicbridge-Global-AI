@@ -1,0 +1,7 @@
+{
+  "version": "1.0.0",
+  "note": "Deterministic demo fixtures. The audio is a synthetic tone; its 'transcript' is a labelled fixture, not speech recognition.",
+  "audio_transcripts": {
+    "b7d1ac9356fbac0369dd08100edd8999d5fa666bc39c58da7042f233203362e8": "[Demo fixture transcript] The streetlight at the corner has been off for three nights."
+  }
+}
