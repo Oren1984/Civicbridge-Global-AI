@@ -1,0 +1,2 @@
+# Jurisdiction packs are checksummed byte-for-byte at seed time; keep LF on every platform.
+backend/packs/*.json text eol=lf
