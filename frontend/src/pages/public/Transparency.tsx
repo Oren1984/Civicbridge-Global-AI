@@ -2,7 +2,7 @@ import { Link } from "react-router";
 import { BarChart3 } from "lucide-react";
 import { useI18n, useEnum } from "../../lib/i18n";
 import { useAuth } from "../../lib/auth";
-import { Card, Notice, Q, SyntheticBadge, useApi } from "../../components/ui";
+import { Card, CreditFooter, Notice, Q, SyntheticBadge, useApi } from "../../components/ui";
 
 type Cell = { value: number | null; suppressed: boolean };
 
@@ -117,6 +117,7 @@ export function Transparency() {
           </Card>
         ) : null}
         <Q q={q}>{(d) => <TransparencyBody data={d} />}</Q>
+        <CreditFooter />
       </main>
     </div>
   );

@@ -1193,6 +1193,14 @@ pre.text-preview {
 .auth-card {
   width: min(420px, 100%);
 }
+.credit-footer {
+  margin-top: var(--sp-5);
+  padding-top: var(--sp-3);
+  border-top: 1px solid var(--border);
+  color: var(--text-2);
+  font-size: 0.78rem;
+  text-align: center;
+}
 @media (max-width: 900px) {
   .auth-wrap {
     grid-template-columns: 1fr;

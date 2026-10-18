@@ -273,6 +273,11 @@ export function SyntheticBadge({ text }: { text?: string }) {
   );
 }
 
+/** Version and developer credit, shown at the foot of every screen. */
+export function CreditFooter() {
+  return <footer className="credit-footer">Version 1.0 | Built and developed by Oren Salami</footer>;
+}
+
 export function SimulatedBadge() {
   const { t } = useI18n();
   return <span className="badge b-synthetic" title={t("simulated.tooltip")}>{t("simulated.badge")}</span>;

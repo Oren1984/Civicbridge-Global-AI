@@ -3,7 +3,7 @@ import { Link, Navigate, useLocation, useNavigate, useSearchParams } from "react
 import { ApiError } from "../../lib/api";
 import { useAuth, WORKSPACE_HOME } from "../../lib/auth";
 import { LOCALES, useI18n } from "../../lib/i18n";
-import { Button, Field, Notice } from "../../components/ui";
+import { Button, CreditFooter, Field, Notice } from "../../components/ui";
 
 export function AuthFrame({ children }: { children: ReactNode }) {
   const { t, locale, setLocale } = useI18n();
@@ -46,6 +46,7 @@ export function AuthFrame({ children }: { children: ReactNode }) {
             </select>
           </div>
           {children}
+          <CreditFooter />
         </div>
       </section>
     </div>

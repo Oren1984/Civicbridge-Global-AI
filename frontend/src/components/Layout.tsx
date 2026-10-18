@@ -9,7 +9,7 @@ import { useAuth, WORKSPACE_HOME } from "../lib/auth";
 import { LOCALES, useI18n } from "../lib/i18n";
 import { usePrefs, type Theme } from "../lib/prefs";
 import { useOnline, useOutbox, outbox } from "../lib/offline";
-import { useApi, Confirm } from "./ui";
+import { useApi, Confirm, CreditFooter } from "./ui";
 import { helpFor } from "../help/articles";
 
 type Item = { to: string; label: string; icon: ReactNode; end?: boolean };
@@ -348,6 +348,7 @@ export function Layout({ children }: { children: ReactNode }) {
       </aside>
       <main id="main" className="main" tabIndex={-1}>
         {children}
+        <CreditFooter />
       </main>
     </div>
   );
